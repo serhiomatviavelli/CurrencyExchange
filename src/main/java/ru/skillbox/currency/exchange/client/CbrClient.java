@@ -58,9 +58,16 @@ public class CbrClient {
     }
 
     @Scheduled(fixedDelayString = "PT1H")
-    public void refreshTables() throws MalformedURLException, JAXBException {
-        ValCurs currenciesList = getCurrenciesFromCbr();
-        List<Valute> currencies = currenciesList.getValuteList();
+    public void refreshTables() {
+        ValCurs currenciesList = null;
+        try {
+            currenciesList = getCurrenciesFromCbr();
+        } catch (JAXBException e) {
+            log.error("Error parsing xml-file: " + e);
+        } catch (MalformedURLException e) {
+            log.error("Connecting error: " + e);
+        }
+        List<Valute> currencies = Objects.requireNonNull(currenciesList).getValuteList();
         currencies.forEach(this::checkCurrency);
     }
 }
