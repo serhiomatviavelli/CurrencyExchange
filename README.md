@@ -62,9 +62,16 @@ curl --request GET \
   --url http://localhost:8080/api/currency/1333
 ```
 
+Конвертация валюты в рубли по числовому коду
+
+```bash
+curl --request GET \
+--url http://localhost:8080/api/currency/convert/ru?value=100&numCode=840
+```
+
 Конвертация валюты по числовому коду
 
 ```bash
 curl --request GET \
---url http://localhost:8080/api/currency/convert?value=100&numCode=840
+--url http://localhost:8080/api/currency/convert?value=100&numCode=840&toNumCode=933
 ```

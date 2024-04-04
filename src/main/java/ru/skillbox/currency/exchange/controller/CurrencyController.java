@@ -20,9 +20,14 @@ public class CurrencyController {
         return ResponseEntity.ok(service.getById(id));
     }
 
+    @GetMapping(value = "/convert/ru")
+    ResponseEntity<Double> convertValueToRubles(@RequestParam("value") Long value, @RequestParam("numCode") Long numCode) {
+        return ResponseEntity.ok(service.convertValueToRubles(value, numCode));
+    }
+
     @GetMapping(value = "/convert")
-    ResponseEntity<Double> convertValue(@RequestParam("value") Long value, @RequestParam("numCode") Long numCode) {
-        return ResponseEntity.ok(service.convertValue(value, numCode));
+    ResponseEntity<Double> convertValue(@RequestParam("value") Long value, @RequestParam("numCode") Long numCode, @RequestParam Long toNumCode) {
+        return ResponseEntity.ok(service.convertValue(value, numCode, toNumCode));
     }
 
     @PostMapping("/create")

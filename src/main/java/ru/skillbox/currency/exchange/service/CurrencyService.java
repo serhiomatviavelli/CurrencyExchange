@@ -2,6 +2,7 @@ package ru.skillbox.currency.exchange.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.math3.util.Precision;
 import org.springframework.stereotype.Service;
 import ru.skillbox.currency.exchange.dto.CurrencyDto;
 import ru.skillbox.currency.exchange.dto.CurrencyForGetAllDto;
@@ -25,10 +26,17 @@ public class CurrencyService {
         return mapper.convertToDto(currency);
     }
 
-    public Double convertValue(Long value, Long numCode) {
-        log.info("CurrencyService method convertValue executed");
+    public Double convertValueToRubles(Long value, Long numCode) {
+        log.info("CurrencyService method convertValueToRubles executed");
         Currency currency = repository.findByIsoNumCode(numCode);
         return value * currency.getValue();
+    }
+
+    public Double convertValue(Long value, Long numCode, Long toNumCode) {
+        log.info("CurrencyService method convertValue executed");
+        Double valueInRubles = convertValueToRubles(value, numCode);
+        Currency toCurrency = repository.findByIsoNumCode(toNumCode);
+        return Precision.round(valueInRubles / toCurrency.getValue(), 2);
     }
 
     public CurrencyDto create(CurrencyDto dto) {
